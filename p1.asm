@@ -42,12 +42,12 @@ _start:
 	mov [num2], al
 	
 	;move nums into eax and edx for addition
-	mov eax, [num1]
-	mov edx, [num2]
-	add eax, edx
+	mov al, [num1]
+	mov ah, [num2]
+	add al, ah
 	
 	;move result back into num1
-	mov [num1], eax
+	mov [num1], al
 	
 	;print 1st part of message
 	mov eax, 4
@@ -55,6 +55,11 @@ _start:
 	mov ecx, resultMsg
 	mov edx, lenResult
 	int 80h
+
+	;convert num1 back to char
+	mov al, [num1]
+	add al, 48
+	mov [num1], al
 
 	;print num1
 	mov eax, 4
@@ -75,7 +80,7 @@ resultMsg: DB "The answer is: "
 lenResult EQU $-resultMsg
 
 section .bss
-num1: RESB 1
-num2: RESB 1
+num1: RESB 2
+num2: RESB 2
 result: RESB 1
 
