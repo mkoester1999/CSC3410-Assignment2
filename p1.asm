@@ -1,0 +1,81 @@
+BITS 32
+global _start
+
+section .text
+
+_start:
+	;prompt number
+	MOV eax, 4 ;SYS_write syscall
+	mov ebx, 1 ;stdout fd
+	mov ecx, prompt ;message
+	mov edx, lenPrompt ;message length
+	int 80h ;syscall interrupt
+	;;read input  
+	mov eax, 3
+	mov ebx, 1
+	mov ecx, num1
+	mov edx, 2
+	int 80h
+
+	;convert num1 to decimal
+	mov al, [num1]
+	sub al, 48
+	mov [num1], al
+	
+	;prompt second number
+	MOV eax, 4 ;SYS_write syscall
+	mov ebx, 1 ;stdout fd
+	mov ecx, prompt ;message
+	mov edx, lenPrompt ;message length
+	int 80h ;syscall interrupt
+	
+	;;read input  
+	mov eax, 3
+	mov ebx, 1
+	mov ecx, num2
+	mov edx, 2
+	int 80h
+
+	;convert num2 to decimal
+	mov al, [num2]
+	sub al, 48
+	mov [num2], al
+	
+	;move nums into eax and edx for addition
+	mov eax, [num1]
+	mov edx, [num2]
+	add eax, edx
+	
+	;move result back into num1
+	mov [num1], eax
+	
+	;print 1st part of message
+	mov eax, 4
+	mov ebx, 1
+	mov ecx, resultMsg
+	mov edx, lenResult
+	int 80h
+
+	;print num1
+	mov eax, 4
+	mov ebx, 1
+	mov ecx, num1
+	mov edx, 2
+	int 80h
+
+	;exit
+	mov eax, 1 ;sys_exit
+	int 80h
+
+section .data
+prompt: DB "Please enter a single-digit number: "
+lenPrompt EQU $-prompt
+	
+resultMsg: DB "The answer is: "
+lenResult EQU $-resultMsg
+
+section .bss
+num1: RESB 1
+num2: RESB 1
+result: RESB 1
+
