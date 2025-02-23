@@ -41,18 +41,27 @@ _start:
 	sub al, 48
 	mov [num2], al
 	
-	mov ax, 0
+	mov eax, 0
+	mov edx, 0
+	mov al, 0
+
+	mov ah, 0 ;clear ah
+
+	;perform division
 	;move num1 into al
 	mov al, [num1]
-	imul byte [num2]
-	;move result back into num1
-	mov [num1], al
+	idiv byte [num2]
 	
+	;move quotient into num1 and remainder into num2
+	mov [num1], al
+	mov [num2], ah
+	
+	;-----Print Quotient-----
 	;print 1st part of message
 	mov eax, 4
 	mov ebx, 1
-	mov ecx, resultMsg
-	mov edx, lenResult
+	mov ecx, quotientMsg 
+	mov edx, lenQuotient
 	int 80h
 
 	;convert num1 back to char
@@ -60,10 +69,31 @@ _start:
 	add al, 48
 	mov [num1], al
 
-	;print num1
+	;convert
+
+	;print num1 (quotient)
 	mov eax, 4
 	mov ebx, 1
 	mov ecx, num1
+	mov edx, 2
+	int 80h
+
+	;-----Print Remainder-----
+	mov eax, 4
+	mov ebx, 1
+	mov ecx, remainderMsg
+	mov edx, lenRemainder
+	int 80h
+
+	;convert num2 to decimal
+	mov al, [num2]
+	add al, 48
+	mov [num2], al
+
+	;print num2
+	mov eax, 4
+	mov ebx, 1
+	mov ecx, num2
 	mov edx, 2
 	int 80h
 
@@ -76,8 +106,11 @@ section .data
 prompt: DB "Please enter a single-digit number: "
 lenPrompt EQU $-prompt
 	
-resultMsg: DB "The answer is: ",
-lenResult EQU $-resultMsg
+quotientMsg: DB "The quotient is: "
+lenQuotient EQU $-quotientMsg
+
+remainderMsg: DB "The remainder is: "
+lenRemainder EQU $-remainderMsg
 
 section .bss
 num1: RESB 2
