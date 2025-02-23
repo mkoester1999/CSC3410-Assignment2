@@ -10,7 +10,8 @@ _start:
 	mov ecx, prompt ;message
 	mov edx, lenPrompt ;message length
 	int 80h ;syscall interrupt
-	;;read input  
+	
+	;read input  
 	mov eax, 3
 	mov ebx, 1
 	mov ecx, num1
@@ -41,15 +42,11 @@ _start:
 	sub al, 48
 	mov [num2], al
 	
-	mov eax, 0
-	mov edx, 0
-	mov al, 0
+	mov ah, 0 ;clear ah for division
 
-	mov ah, 0 ;clear ah
-
-	;perform division
 	;move num1 into al
 	mov al, [num1]
+	;perform division
 	idiv byte [num2]
 	
 	;move quotient into num1 and remainder into num2
