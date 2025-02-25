@@ -12,7 +12,7 @@ _start:
 	int 80h ;syscall interrupt
 	;;read input  
 	mov eax, 3
-	mov ebx, 1
+	mov ebx, 0
 	mov ecx, string 
 	mov edx, 3
 	int 80h

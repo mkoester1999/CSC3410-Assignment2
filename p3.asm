@@ -13,7 +13,7 @@ _start:
 	
 	;read input  
 	mov eax, 3
-	mov ebx, 1
+	mov ebx, 0
 	mov ecx, num1
 	mov edx, 2
 	int 80h
@@ -32,7 +32,7 @@ _start:
 	
 	;;read input  
 	mov eax, 3
-	mov ebx, 1
+	mov ebx, 0
 	mov ecx, num2
 	mov edx, 2
 	int 80h
